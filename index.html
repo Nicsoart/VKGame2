@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build78.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build79.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -132,13 +132,15 @@
     }
 
     function VKInvite() {
-        vkBridge.send("VKWebAppShowInviteBox").catch(err => {
-          console.log(err);
-          VK.callMethod("showInviteBox");
-        })
+      console.log("VKInvite");
+      vkBridge.send("VKWebAppShowInviteBox").catch(err => {
+        console.log(err);
+        VK.callMethod("showInviteBox");
+      })
     }
 
     function VKMobileInvite() {
+      console.log("VKMobileInvite");
       vkBridge.send("VKWebAppShowInviteBox");
     }
 
@@ -283,5 +285,6 @@
       document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'none';
     }
   </script>
+
   </body>
 </html>
