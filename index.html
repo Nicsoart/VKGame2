@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | AdvertisingTest</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build78.json", {onProgress: UnityProgress});
+    </script>
+
+    <script type = "text/javascript" language = "javascript">
+    var fullscreenID = 'ID';
+    var mobilefullscreenID = 'ID';
+    var horizontalbannerID = 'ID';
+    var mobilebannerID = 'ID';
+    var rewardvideoID = 'ID';
+
+    var text;
+    var link;
+    </script>
+
+    <!-- Yandex.RTB -->
+    <script>window.yaContextCb=window.yaContextCb||[]</script>
+    <script src="https://yandex.ru/ads/system/context.js" async></script>
+    <!-- VK.API -->
+    <script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+    <!-- VK.bridge -->
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+
+  </head>
+  <body>
+    <div class="webgl-content">
+
+    <div id="unityContainer" style="position:relative; width: 100vw; height: 100vh"></div>
+
+      <!-- Full Screen -->
+    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+
+    <!-- Mobile Full Screen -->
+    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+
+    <!-- Horizontal Banner -->
+    <div id="yandex_rtb_ID" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh"></div>
+
+    <!-- Mobile Banner -->
+    <div id="yandex_rtb_ID" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh"></div>
+
+    <!-- Reward Video -->
+    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+
+    </div>
+
+    <script type = "text/javascript" language = "javascript">
+
+// Initialization
+    function AdsInitialization() {
+      document.getElementById('yandex_rtb_' + fullscreenID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + mobilefullscreenID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + horizontalbannerID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + mobilebannerID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'none';
+
+      unityInstance.SendMessage('AdsManager', 'VerticalInitialization', 1);
+    }
+
+// VK
+    function VKInitialization() {
+      VK.init(function() {
+      }, function() {
+        VKInitialization();
+      }, '5.131');
+    }
+
+    function VKMobileInitialization()
+    {
+      vkBridge.send('VKWebAppInit').then(res => {
+        console.log(res);
+        vkBridge.send("VKWebAppGetUserInfo").then(res => {
+          console.log(res);
+        });
+        vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
+          console.log(res);
+        });
+      })
+    }
+
+    function PlayerInitialization() {
+      vkBridge.send("VKWebAppGetUserInfo").then(res => {
+        console.log(res);
+      })
+    }
+
+    function ShowVKInterstational() {
+      vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
+      .then(data =>{
+        unityInstance.SendMessage('AdsManager', 'AdShowed');
+      })
+      .catch(error =>{
+        unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
+      });
+    }
+
+    function ShowVKRewardVideo() {
+      vkBridge.send("VKWebAppShowNativeAds", {ad_format:"reward"})
+      .then(data => {
+        unityInstance.SendMessage('AdsManager', 'GetReward');
+      })
+      .catch(error => {
+        unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
+      });
+    }
+
+    function VKInvite() {
+        vkBridge.send("VKWebAppShowInviteBox").catch(err => {
+          console.log(err);
+          VK.callMethod("showInviteBox");
+        })
+    }
+
+    function VKMobileInvite() {
+      vkBridge.send("VKWebAppShowInviteBox");
+    }
+
+    function VKPublish(text, link) {
+      vkBridge.send("VKWebAppShowWallPostBox", {
+        "message": text,
+        "attachments": link
+      }).catch(err => {
+        console.log(err);
+        VK.api("wall.post", {"message": text, "attachments" : link, "v":"5.73"}, function (data) {
+        })
+      })
+    }
+
+    function VKMobilePublish(text, link) {
+      vkBridge.send("VKWebAppShowWallPostBox", {
+        "message": text,
+        "attachments": link
+      });
+    }
+
+    function VKAddInMenu() {
+      VK.callMethod("showSettingsBox", 256);
+    }
+
+    function VKAddToHomeScreen() {
+      vkBridge.send("VKWebAppAddToHomeScreen").then(res => {
+        console.log(res);
+      })
+    }
+
+    function VKFavorite() {
+      vkBridge.send("VKWebAppAddToFavorites").then(res => {
+        console.log(res);
+      })
+    }
+
+// Full Screen
+    function ShowFullScreen() {
+      document.getElementById('yandex_rtb_' + fullscreenID).style.display = 'block';
+      Ya.Context.AdvManager.render({
+        renderTo: 'yandex_rtb_' + fullscreenID,
+        blockId: fullscreenID,
+        onError: (data) => {
+          unityInstance.SendMessage('AdsManager', 'CloseFullScreen');
+        },
+        onRender: (data) => {
+          unityInstance.SendMessage('AdsManager', 'FullScreenLoaded');
+        }
+      })
+    }
+
+    function ShowMobileFullScreen() {
+      document.getElementById('yandex_rtb_' + mobilefullscreenID).style.display = 'block';
+      Ya.Context.AdvManager.render({
+        renderTo: 'yandex_rtb_' + mobilefullscreenID,
+        blockId: mobilefullscreenID,
+        onError: (data) => {
+          unityInstance.SendMessage('AdsManager', 'CloseFullScreen');
+        },
+        onRender: (data) => {
+          unityInstance.SendMessage('AdsManager', 'FullScreenLoaded');
+        }
+      })
+    }
+
+    function CloseFullScreen() {
+      document.getElementById('yandex_rtb_' + fullscreenID).style.display = 'none';
+    }
+
+    function CloseMobileFullScreen() {
+      document.getElementById('yandex_rtb_' + mobilefullscreenID).style.display = 'none';
+    }
+
+// Banner
+    function ShowBanner() {
+      document.getElementById('yandex_rtb_' + horizontalbannerID).style.display = 'block';
+      Ya.Context.AdvManager.render({
+        renderTo: 'yandex_rtb_' + horizontalbannerID,
+        blockId: horizontalbannerID,
+        onError: (data) => {
+          unityInstance.SendMessage('AdsManager', 'CloseBanner');
+        }
+      })
+    }
+
+    function ShowMobileBanner() {
+      document.getElementById('yandex_rtb_' + mobilebannerID).style.display = 'block';
+      Ya.Context.AdvManager.render({
+        renderTo: 'yandex_rtb_' + mobilebannerID,
+        blockId: mobilebannerID,
+        onError: (data) => {
+          unityInstance.SendMessage('AdsManager', 'CloseBanner');
+        }
+      })
+    }
+
+    function CloseBanner() {
+      document.getElementById('yandex_rtb_' + horizontalbannerID).style.display = 'none';
+    }
+
+    function CloseMobileBanner() {
+      document.getElementById('yandex_rtb_' + mobilebannerID).style.display = 'none';
+    }
+
+// Custon Reward Video
+    function ShowCustomRewardVideo() {
+      document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'block';
+      Ya.Context.AdvManager.render({
+        renderTo: 'yandex_rtb_' + rewardvideoID,
+        blockId: rewardvideoID,
+        onError: (data) => {
+          unityInstance.SendMessage('AdsManager', 'CloseCustomRewardVideo');
+        },
+        onRender: (data) => {
+          unityInstance.SendMessage('AdsManager', 'CustomRewardVideoLoaded');
+        }
+      })
+    }
+
+    function CloseCustomRewardVideo() {
+      document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'none';
+    }
+
+    function ShowMobileCustomRewardVideo() {
+      document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'block';
+      Ya.Context.AdvManager.render({
+        renderTo: 'yandex_rtb_' + rewardvideoID,
+        blockId: rewardvideoID,
+        onError: (data) => {
+          unityInstance.SendMessage('AdsManager', 'CloseMobileCustomRewardVideo');
+        },
+        onRender: (data) => {
+          unityInstance.SendMessage('AdsManager', 'CustomRewardVideoLoaded');
+        }
+      })
+    }
+
+    function CloseMobileCustomRewardVideo() {
+      document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'none';
+    }
+  </script>
+  </body>
+</html>
