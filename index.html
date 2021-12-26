@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build79.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build80.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -80,16 +80,9 @@
     {
       let userLang = navigator.language || navigator.userLanguage;
       unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', userLang);
-
       vkBridge.send('VKWebAppInit').then(res => {
         if (res.result === true)
         {
-          vkBridge.send("VKWebAppGetUserInfo").then(res => {
-            let userName = res.first_name + " " + res.last_name;
-            unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
-            unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', res.photo_200);
-            unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
-          });
           vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
             console.log(res);
             if (res.is_feature_supported === false) {
@@ -100,15 +93,7 @@
               }
             }
           })
-        } else {
-          unityInstance.SendMessage('PlayerManager', 'PlayerNotAuthorized');
         }
-      })
-    }
-
-    function PlayerInitialization() {
-      vkBridge.send("VKWebAppGetUserInfo").then(res => {
-        console.log(res);
       })
     }
 
@@ -133,16 +118,13 @@
     }
 
     function VKInvite() {
-      console.log("VKInvite");
-      vkBridge.send("VKWebAppShowInviteBox", {}).catch(err => {
-        console.log(err);
+      vkBridge.send("VKWebAppShowInviteBox").catch(err => {
         VK.callMethod("showInviteBox");
       })
     }
 
     function VKMobileInvite() {
-      console.log("VKMobileInvite");
-      vkBridge.send("VKWebAppShowInviteBox", {});
+      vkBridge.send("VKWebAppShowInviteBox");
     }
 
     function VKPublish(text, link) {
@@ -150,7 +132,6 @@
         "message": text,
         "attachments": link
       }).catch(err => {
-        console.log(err);
         if (err.error_type !== "client_error") {
           VK.api("wall.post", {"message": text, "attachments" : link, "v":"5.73"}, function (data) {
           })
@@ -171,14 +152,14 @@
 
     function VKAddToHomeScreen() {
       vkBridge.send("VKWebAppAddToHomeScreen").then(res => {
-        console.log(res);
+        if (res.is_added_to_home_screen === true) {
+          unityInstance.SendMessage('VKMechanicsController', 'Added');
+        }
       })
     }
 
     function VKFavorite() {
-      vkBridge.send("VKWebAppAddToFavorites").then(res => {
-        console.log(res);
-      })
+      vkBridge.send("VKWebAppAddToFavorites");
     }
 
 // Full Screen
@@ -286,6 +267,5 @@
       document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'none';
     }
   </script>
-
   </body>
 </html>
