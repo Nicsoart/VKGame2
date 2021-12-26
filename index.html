@@ -38,19 +38,19 @@
     <div id="unityContainer" style="position:relative; width: 100vw; height: 100vh"></div>
 
       <!-- Full Screen -->
-    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #CD5C5C"></div>
 
     <!-- Mobile Full Screen -->
-    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #ADFF2F"></div>
 
     <!-- Horizontal Banner -->
-    <div id="yandex_rtb_ID" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh"></div>
+    <div id="yandex_rtb_ID" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh; background: #FF69B4"></div>
 
     <!-- Mobile Banner -->
-    <div id="yandex_rtb_ID" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh"></div>
+    <div id="yandex_rtb_ID" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh; background: #FF6347"></div>
 
     <!-- Reward Video -->
-    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+    <div id="yandex_rtb_ID" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #FFFF00"></div>
 
     </div>
 
@@ -91,6 +91,7 @@
             unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
           });
           vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
+            console.log(res);
             if (res.is_feature_supported === false) {
               unityInstance.SendMessage('VKMechanicsController', 'Added');
             } else {
@@ -133,7 +134,7 @@
 
     function VKInvite() {
       console.log("VKInvite");
-      vkBridge.send("VKWebAppShowInviteBox").catch(err => {
+      vkBridge.send("VKWebAppShowInviteBox", {}).catch(err => {
         console.log(err);
         VK.callMethod("showInviteBox");
       })
@@ -141,7 +142,7 @@
 
     function VKMobileInvite() {
       console.log("VKMobileInvite");
-      vkBridge.send("VKWebAppShowInviteBox");
+      vkBridge.send("VKWebAppShowInviteBox", {});
     }
 
     function VKPublish(text, link) {
