@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build80.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build81.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -30,6 +30,8 @@
     <script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
     <!-- VK.bridge -->
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+    <!-- OK -->
+    <script type="text/javascript" src="//api.ok.ru/js/fapi5.js" defer="defer"></script>
 
   </head>
   <body>
@@ -38,19 +40,19 @@
     <div id="unityContainer" style="position:relative; width: 100vw; height: 100vh"></div>
 
       <!-- Full Screen -->
-    <div id="yandex_rtb_R-A-1324864-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #CD5C5C"></div>
+    <div id="yandex_rtb_R-A-1324864-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     <!-- Mobile Full Screen -->
-    <div id="yandex_rtb_R-A-1324864-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #ADFF2F"></div>
+    <div id="yandex_rtb_R-A-1324864-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     <!-- Horizontal Banner -->
-    <div id="yandex_rtb_R-A-1324864-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh; background: #FF69B4"></div>
+    <div id="yandex_rtb_R-A-1324864-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh"></div>
 
     <!-- Mobile Banner -->
-    <div id="yandex_rtb_R-A-1324864-5" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh; background: #FF6347"></div>
+    <div id="yandex_rtb_R-A-1324864-5" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh"></div>
 
     <!-- Reward Video -->
-    <div id="yandex_rtb_R-A-1324864-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #FFFF00"></div>
+    <div id="yandex_rtb_R-A-1324864-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     </div>
 
@@ -67,7 +69,74 @@
       unityInstance.SendMessage('AdsManager', 'VerticalInitialization', 1);
     }
 
-// VK
+// OK
+  var currentUserId;
+  var rParams = FAPI.Util.getRequestParameters();
+
+    function OKInitialization() {
+      FAPI.init(rParams["api_server"], rParams["apiconnection"],
+          /*
+          * Первый параметр:
+          * функция, которая будет вызвана после успешной инициализации.
+          */
+          function() {
+              currentUserId = FAPI.Util.getRequestParameters()["logged_user_id"];
+          },
+          /*
+          * Второй параметр:
+          * функция, которая будет вызвана, если инициализация не удалась.
+          */
+          function(error) {
+          }
+      );
+    }
+
+    function ShowOKInterstational() {
+      FAPI.UI.showAd()
+      .then(res => {
+        console.log(res);
+        if (res.data === "no_ads" || res.data === "call_limit") {
+          unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
+      })
+    }
+
+    function ShowOKRewardVideo() {
+      FAPI.UI.loadAd()
+      .then(res => {
+        console.log(res);
+        if (res.data === "ready") {
+          FAPI.UI.showLoadedAd().then(res => {
+            console.log(res);
+            if (res.data === "complete") {
+              unityInstance.SendMessage('AdsManager', 'GetReward');
+            } else if (res.data === "not_prepared" || res.data === "mp4_not_supported") {
+              unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
+            }
+          })
+        } else if (res.data === "empty" || res.data === "call_limit" || res.data === "disabled") {
+          unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
+      })
+    }
+
+    function OKPublish(text, link) {
+      vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
+      "params": {"uid" : currentUserId, "type" : "USER",
+      "attachment": {"media" : [{"title" : text, "url" : link}]}}});
+    }
+
+  //  function
+
+    // VK
     function VKInitialization() {
       VK.init(function() {
       }, function() {
@@ -83,6 +152,15 @@
       vkBridge.send('VKWebAppInit').then(res => {
         if (res.result === true)
         {
+          vkBridge.send("VKWebAppGetClientVersion").then(res => {
+            console.log(res);
+          });
+          vkBridge.send("VKWebAppGetUserInfo").then(res => {
+            let userName = res.first_name + " " + res.last_name;
+            unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
+            unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', res.photo_200);
+            unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
+          });
           vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
             console.log(res);
             if (res.is_feature_supported === false) {
@@ -93,6 +171,8 @@
               }
             }
           })
+        } else {
+          unityInstance.SendMessage('PlayerManager', 'PlayerNotAuthorized');
         }
       })
     }
@@ -267,5 +347,6 @@
       document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'none';
     }
   </script>
+
   </body>
 </html>
