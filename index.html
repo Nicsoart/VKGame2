@@ -21,6 +21,7 @@
 
     var text;
     var link;
+    var currentUserId;
     </script>
 
     <!-- Yandex.RTB -->
@@ -70,10 +71,8 @@
     }
 
 // OK
-  var currentUserId;
-  var rParams = FAPI.Util.getRequestParameters();
-
     function OKInitialization() {
+      var rParams = FAPI.Util.getRequestParameters();
       FAPI.init(rParams["api_server"], rParams["apiconnection"],
           /*
           * Первый параметр:
@@ -156,6 +155,7 @@
             console.log(res);
           });
           vkBridge.send("VKWebAppGetUserInfo").then(res => {
+            console.log(res);
             let userName = res.first_name + " " + res.last_name;
             unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
             unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', res.photo_200);
@@ -198,9 +198,13 @@
     }
 
     function VKInvite() {
-      vkBridge.send("VKWebAppShowInviteBox").catch(err => {
+      try {
+        vkBridge.send("VKWebAppShowInviteBox").catch(err => {
+          VK.callMethod("showInviteBox");
+        })
+      } catch(err) {
         VK.callMethod("showInviteBox");
-      })
+      }
     }
 
     function VKMobileInvite() {
