@@ -80,11 +80,8 @@
         //}
       //});
 
-      FAPI.Util.getRequestParameters().then(res => {
-        console.log(res);
-      })
-
       var rParams = FAPI.Util.getRequestParameters();
+      console.log(rParams);
       FAPI.init(rParams["api_server"], rParams["apiconnection"],
           function() {
             console.log("ok");
