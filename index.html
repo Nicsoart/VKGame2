@@ -21,7 +21,6 @@
 
     var text;
     var link;
-    var currentUserId;
     </script>
 
     <!-- Yandex.RTB -->
@@ -71,64 +70,15 @@
     }
 
     function PlatformInitialization() {
-      //vkBridge.send("VKWebAppGetClientVersion").then(res => {
-        //console.log(res);
-        //if (res.app !== "undefined" && res.app === "ok") {
-          //unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
-        //} else {
-          //unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
-        //}
-      //});
-
       var rParams = FAPI.Util.getRequestParameters();
-      console.log(rParams);
-      FAPI.init(rParams["api_server"], rParams["apiconnection"],
-          function() {
-            console.log("ok");
-          },
-          function(error) {
-            console.log(error);
-            console.log("no ok");
-          }
-      )
+      if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
+        console.log("ok");
+      } else {
+        console.log("vk");
+      }
     }
 
 // OK
-    function OKInitialization() {
-      var rParams = FAPI.Util.getRequestParameters();
-      FAPI.init(rParams["api_server"], rParams["apiconnection"],
-          /*
-          * Первый параметр:
-          * функция, которая будет вызвана после успешной инициализации.
-          */
-          function() {
-              currentUserId = FAPI.Util.getRequestParameters()["logged_user_id"];
-
-              let userLang = navigator.language || navigator.userLanguage;
-              unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', userLang);
-              vkBridge.send('VKWebAppInit').then(res => {
-                if (res.result === true)
-                {
-                  vkBridge.send("VKWebAppGetUserInfo").then(res => {
-                    let userName = res.first_name + " " + res.last_name;
-                    unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
-                    unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
-                  })
-                } else {
-                  unityInstance.SendMessage('PlayerManager', 'PlayerNotAuthorized');
-                }
-              })
-          },
-          /*
-          * Второй параметр:
-          * функция, которая будет вызвана, если инициализация не удалась.
-          */
-          function(error) {
-            unityInstance.SendMessage('PlayerManager', 'PlayerNotAuthorized');
-          }
-      );
-    }
-
     function ShowOKInterstational() {
       FAPI.UI.showAd()
       .then(res => {
@@ -175,17 +125,6 @@
 
     function OKInvite(text, link) {
       FAPI.UI.showInvite(text + '\n' + link);
-    }
-
-    document.addEventListener("DOMContentLoaded", function(event)
-    {
-    window.onresize = function() {
-        ResizeBanners();
-        };
-    });
-
-    function ResizeBanners() {
-      unityInstance.SendMessage('AdsManager', 'ResizeBanners');
     }
 
     // VK
