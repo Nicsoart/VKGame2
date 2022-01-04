@@ -71,18 +71,24 @@
     }
 
     function PlatformInitialization() {
-      vkBridge.send("VKWebAppGetClientVersion").then(res => {
-        console.log(res);
-        if (res.app !== "undefined" && res.app === "ok") {
-          unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
-        } else {
-          unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
-        }
-      });
+      //vkBridge.send("VKWebAppGetClientVersion").then(res => {
+        //console.log(res);
+        //if (res.app !== "undefined" && res.app === "ok") {
+          //unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
+        //} else {
+          //unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
+        //}
+      //});
 
-      vkBridge.send("VKWebAppGetUserInfo").then(res => {
-        console.log(res);
-      })
+      var rParams = FAPI.Util.getRequestParameters();
+      FAPI.init(rParams["api_server"], rParams["apiconnection"],
+          function() {
+            console.log("no ok");
+          },
+          function(error) {
+            console.log("ok");
+          }
+      )
     }
 
 // OK
@@ -169,7 +175,16 @@
       FAPI.UI.showInvite(text + '\n' + link);
     }
 
-  //  function
+    document.addEventListener("DOMContentLoaded", function(event)
+    {
+    window.onresize = function() {
+        ResizeBanners();
+        };
+    });
+
+    function ResizeBanners() {
+      unityInstance.SendMessage('AdsManager', 'ResizeBanners');
+    }
 
     // VK
     function VKInitialization() {
