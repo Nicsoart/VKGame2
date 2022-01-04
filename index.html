@@ -78,6 +78,10 @@
         } else {
           unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
         }
+      });
+
+      vkBridge.send("VKWebAppGetUserInfo").then(res => {
+        console.log(res);
       })
     }
 
@@ -184,7 +188,6 @@
         if (res.result === true)
         {
           vkBridge.send("VKWebAppGetUserInfo").then(res => {
-            console.log(res);
             let userName = res.first_name + " " + res.last_name;
             let userPhoto = res.photo_200;
             unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
@@ -192,7 +195,6 @@
             unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
           });
           vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
-            console.log(res);
             if (res.is_feature_supported === false) {
               unityInstance.SendMessage('VKMechanicsController', 'Added');
             } else {
