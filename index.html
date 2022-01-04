@@ -83,10 +83,10 @@
       var rParams = FAPI.Util.getRequestParameters();
       FAPI.init(rParams["api_server"], rParams["apiconnection"],
           function() {
-            console.log("no ok");
+            console.log("ok");
           },
           function(error) {
-            console.log("ok");
+            console.log("no ok");
           }
       )
     }
