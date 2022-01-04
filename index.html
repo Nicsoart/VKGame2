@@ -72,6 +72,7 @@
 
     function PlatformInitialization() {
       vkBridge.send("VKWebAppGetClientVersion").then(res => {
+        console.log(res);
         if (res.app !== "undefined" && res.app === "ok") {
           unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
         } else {
@@ -97,11 +98,8 @@
                 if (res.result === true)
                 {
                   vkBridge.send("VKWebAppGetUserInfo").then(res => {
-                    console.log(res);
                     let userName = res.first_name + " " + res.last_name;
-                    let userPhoto = res.photo_200;
                     unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
-                    unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', userPhoto);
                     unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
                   })
                 } else {
