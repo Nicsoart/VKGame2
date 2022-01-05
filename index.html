@@ -21,6 +21,7 @@
 
     var text;
     var link;
+    var userLang;
     </script>
 
     <!-- Yandex.RTB -->
@@ -70,12 +71,21 @@
     }
 
     function PlatformInitialization() {
-      var rParams = FAPI.Util.getRequestParameters();
-      if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
-        console.log("ok");
-      } else {
-        console.log("vk");
-      }
+      try {
+        var rParams = FAPI.Util.getRequestParameters();
+        console.log(rParams);
+        //userLang = rParams.
+        if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
+          console.log("rParams ok");
+        } else {
+          console.log("rParams vk");
+        }
+      } catch (e) {
+        console.log("vrParams k");
+      };
+      bridge.send("VKWebAppGetLaunchParams").then(res => {
+        console.log(res);
+      })
     }
 
 // OK
@@ -133,12 +143,12 @@
       }, function() {
         VKInitialization();
       }, '5.131');
+      userLang = navigator.language || navigator.userLanguage;
       VKMobileInitialization();
     }
 
     function VKMobileInitialization()
     {
-      let userLang = navigator.language || navigator.userLanguage;
       unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', userLang);
       vkBridge.send('VKWebAppInit').then(res => {
         if (res.result === true)
