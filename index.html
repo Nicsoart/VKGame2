@@ -83,8 +83,10 @@
       } catch (e) {
         console.log("vrParams k");
       };
-      bridge.send("VKWebAppGetLaunchParams").then(res => {
-        console.log(res);
+      vkBridge.send('VKWebAppInit').then(res => {
+        vkBridge.send("VKWebAppGetLaunchParams").then(res => {
+          console.log(res);
+        })
       })
     }
 
@@ -150,27 +152,20 @@
     function VKMobileInitialization()
     {
       unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', userLang);
-      vkBridge.send('VKWebAppInit').then(res => {
-        if (res.result === true)
-        {
-          vkBridge.send("VKWebAppGetUserInfo").then(res => {
-            let userName = res.first_name + " " + res.last_name;
-            let userPhoto = res.photo_200;
-            unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
-            unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', userPhoto);
-            unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
-          });
-          vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
-            if (res.is_feature_supported === false) {
-              unityInstance.SendMessage('VKMechanicsController', 'Added');
-            } else {
-              if (res.is_added_to_home_screen === true) {
-                unityInstance.SendMessage('VKMechanicsController', 'Added');
-              }
-            }
-          })
+      vkBridge.send("VKWebAppGetUserInfo").then(res => {
+        let userName = res.first_name + " " + res.last_name;
+        let userPhoto = res.photo_200;
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', userPhoto);
+        unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
+      });
+      vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
+        if (res.is_feature_supported === false) {
+          unityInstance.SendMessage('VKMechanicsController', 'Added');
         } else {
-          unityInstance.SendMessage('PlayerManager', 'PlayerNotAuthorized');
+          if (res.is_added_to_home_screen === true) {
+            unityInstance.SendMessage('VKMechanicsController', 'Added');
+          }
         }
       })
     }
