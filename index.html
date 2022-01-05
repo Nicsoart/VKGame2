@@ -143,6 +143,7 @@
     {
       vkBridge.send("VKWebAppGetLaunchParams").then(res => {
         unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', res.vk_language);
+        console.log(res);
         if (res.vk_is_favorite === 1) {
           unityInstance.SendMessage('VKMechanicsController', 'InFavorite');
         }
