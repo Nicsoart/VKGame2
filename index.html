@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build83.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build85.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -21,7 +21,6 @@
 
     var text;
     var link;
-    var userLang;
     </script>
 
     <!-- Yandex.RTB -->
@@ -71,21 +70,13 @@
     }
 
     function PlatformInitialization() {
-      try {
-        var rParams = FAPI.Util.getRequestParameters();
-        console.log(rParams);
-        //userLang = rParams.
-        if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
-          console.log("rParams ok");
-        } else {
-          console.log("rParams vk");
-        }
-      } catch (e) {
-        console.log("vrParams k");
-      };
       vkBridge.send('VKWebAppInit').then(res => {
         vkBridge.send("VKWebAppGetLaunchParams").then(res => {
-          console.log(res);
+          if (res.vk_client !== "undefined" && res.vk_client == "ok") {
+            unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
+          } else {
+            unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
+          }
         })
       })
     }
@@ -145,13 +136,18 @@
       }, function() {
         VKInitialization();
       }, '5.131');
-      userLang = navigator.language || navigator.userLanguage;
       VKMobileInitialization();
     }
 
     function VKMobileInitialization()
     {
-      unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', userLang);
+      vkBridge.send("VKWebAppGetLaunchParams").then(res => {
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', res.vk_language);
+        if (res.vk_is_favorite === 1) {
+          unityInstance.SendMessage('VKMechanicsController', 'InFavorite');
+        }
+      });
+
       vkBridge.send("VKWebAppGetUserInfo").then(res => {
         let userName = res.first_name + " " + res.last_name;
         let userPhoto = res.photo_200;
@@ -159,6 +155,7 @@
         unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', userPhoto);
         unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
       });
+
       vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
         if (res.is_feature_supported === false) {
           unityInstance.SendMessage('VKMechanicsController', 'Added');
