@@ -31,7 +31,6 @@
     <!-- VK.bridge -->
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
     <!-- OK -->
-    <script type="text/javascript" src="oksdk.js"></script>
     <script type="text/javascript" src="//api.ok.ru/js/fapi5.js" defer="defer"></script>
 
   </head>
@@ -87,6 +86,11 @@
     }
 
 // OK
+  function API_callback(method, result, data) {
+        var str = "{ \"method\": \"" + method + "\", \"result\": \"" + result + "\", \"data\": \"" + data + "\",}";
+        console.log(str);
+  }
+
   function OKInitialization() {
     console.log("OKInitialization");
     vkBridge.send('VKWebAppInit').then(res => {
@@ -140,13 +144,13 @@
     }
 
     function OKPublish(text, link) {
-      var rParams = FAPI.Util.getRequestParameters();
-      var currentUserId = rParams.vk_user_id;
-      vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
-      "params": {"uid" : currentUserId, "type" : "USER",
-      "attachment": {"media" : [{"title" : text, "url" : link}]}}});
+      //var rParams = FAPI.Util.getRequestParameters();
+      //var currentUserId = rParams.vk_user_id;
+      //vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
+      //"params": {"uid" : currentUserId, "type" : "USER",
+      //"attachment": {"media" : [{"title" : text, "url" : link}]}}});
 
-      //FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
+      FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
     }
 
     function OKInvite(text, link) {
