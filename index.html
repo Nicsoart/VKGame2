@@ -137,8 +137,7 @@
       var rParams = FAPI.Util.getRequestParameters();
       var currentUserId = rParams.vk_user_id;
       vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
-      "params": {"uid" : currentUserId, "type" : "USER",
-      "attachment": {"media" : [{"type" : link, "url" : link}]}}});
+      "params": {"attachment": {"media" : [{"type" : "link", "url" : link}]}}});
 
       //FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
     }
