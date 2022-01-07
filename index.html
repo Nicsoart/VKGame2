@@ -87,6 +87,7 @@
 
 // OK
   function OKInitialization() {
+    console.log("OKInitialization");
     vkBridge.send('VKWebAppInit').then(res => {
       var rParams = FAPI.Util.getRequestParameters();
       unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.vk_language);
