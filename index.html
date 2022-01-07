@@ -139,10 +139,11 @@
     }
 
     function OKPublish(text, link) {
-      //vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
-      //"params": {"uid" : currentUserId, "type" : "USER",
-      //"attachment": {"media" : [{"title" : text, "url" : link}]}}});
-      FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
+      vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
+      "params": {"uid" : currentUserId, "type" : "USER",
+      "attachment": {"media" : [{"title" : text, "url" : link}]}}});
+
+      //FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
     }
 
     function OKInvite(text, link) {
