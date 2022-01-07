@@ -73,6 +73,7 @@
       vkBridge.send('VKWebAppInit').then(res => {
         vkBridge.send("VKWebAppGetLaunchParams").then(res => {
           if (res.vk_client !== "undefined" && res.vk_client == "ok") {
+            console.log("ok");
             unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
           } else {
             unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
@@ -141,6 +142,7 @@
 
     function VKMobileInitialization()
     {
+      console.log("bridge");
       vkBridge.send("VKWebAppGetLaunchParams").then(res => {
         unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', res.vk_language);
         console.log(res);
