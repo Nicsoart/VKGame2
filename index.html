@@ -70,7 +70,9 @@
     }
 
     function PlatformInitialization() {
+      console.log("platform");
       vkBridge.send('VKWebAppInit').then(res => {
+        console.log(res);
         vkBridge.send("VKWebAppGetLaunchParams").then(res => {
           console.log(res);
           if (res.vk_client !== "undefined" && res.vk_client == "ok") {
