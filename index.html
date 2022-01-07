@@ -72,9 +72,10 @@
     function PlatformInitialization() {
       try {
         var rParams = FAPI.Util.getRequestParameters();
+        console.log(rParams);
         if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
           console.log("ok");
-          unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
+          //unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
         } else {
           console.log("vk");
           unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
@@ -85,6 +86,35 @@
     }
 
 // OK
+  function OKInitialization() {
+    vkBridge.send('VKWebAppInit').then(res => {
+      vkBridge.send("VKWebAppGetLaunchParams").then(res => {
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', res.vk_language);
+        if (res.vk_is_favorite === 1) {
+          unityInstance.SendMessage('VKMechanicsController', 'InFavorite');
+        }
+      });
+
+      vkBridge.send("VKWebAppGetUserInfo").then(res => {
+        let userName = res.first_name + " " + res.last_name;
+        let userPhoto = res.photo_200;
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', userPhoto);
+        unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
+      });
+
+      vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
+        if (res.is_feature_supported === false) {
+          unityInstance.SendMessage('VKMechanicsController', 'Added');
+        } else {
+          if (res.is_added_to_home_screen === true) {
+            unityInstance.SendMessage('VKMechanicsController', 'Added');
+          }
+        }
+      })
+    })
+  }
+
     function ShowOKInterstational() {
       FAPI.UI.showAd()
       .then(res => {
@@ -147,7 +177,6 @@
       vkBridge.send('VKWebAppInit').then(res => {
         vkBridge.send("VKWebAppGetLaunchParams").then(res => {
           unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', res.vk_language);
-          console.log(res);
           if (res.vk_is_favorite === 1) {
             unityInstance.SendMessage('VKMechanicsController', 'InFavorite');
           }
