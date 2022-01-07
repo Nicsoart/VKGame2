@@ -75,7 +75,7 @@
         console.log(rParams);
         if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
           console.log("ok");
-          //unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
+          unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
         } else {
           console.log("vk");
           unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
