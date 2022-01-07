@@ -72,10 +72,12 @@
     function PlatformInitialization() {
       vkBridge.send('VKWebAppInit').then(res => {
         vkBridge.send("VKWebAppGetLaunchParams").then(res => {
+          console.log(res);
           if (res.vk_client !== "undefined" && res.vk_client == "ok") {
             console.log("ok");
             unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
           } else {
+            console.log("vk");
             unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
           }
         })
