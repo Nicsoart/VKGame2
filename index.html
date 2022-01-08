@@ -32,6 +32,7 @@
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
     <!-- OK -->
     <script type="text/javascript" src="//api.ok.ru/js/fapi5.js" defer="defer"></script>
+    <script type="text/javascript" src="oksdk.js"></script>
 
   </head>
   <body>
@@ -114,6 +115,7 @@
     console.log("OKInitialization");
     vkBridge.send('VKWebAppInit').then(res => {
       var rParams = FAPI.Util.getRequestParameters();
+      console.log(rParams);
       unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.vk_language);
       vkBridge.send("VKWebAppGetUserInfo").then(res => {
         let userName = res.first_name + " " + res.last_name;
