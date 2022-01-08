@@ -32,7 +32,6 @@
     <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
     <!-- OK -->
     <script type="text/javascript" src="//api.ok.ru/js/fapi5.js" defer="defer"></script>
-    <script type="text/javascript" src="oksdk.js"></script>
 
   </head>
   <body>
@@ -91,31 +90,12 @@
     console.log(method);
     console.log(result);
     console.log(data);
-
-    if (method === "showAd") {
-      if (data === "no_ads" || data === "call_limit") {
-        unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
-      }
-    } else if (method === "loadAd") {
-      if (data === "ready") {
-        FAPI.UI.showLoadedAd();
-      } else if (data === "empty" || data === "call_limit" || data === "disabled") {
-        unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
-      }
-    } else if (method === "loadAd") {
-      if (data === "complete") {
-        unityInstance.SendMessage('AdsManager', 'GetReward');
-      } else if (data === "not_prepared" || data === "mp4_not_supported") {
-        unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
-      }
-    }
   }
 
   function OKInitialization() {
     console.log("OKInitialization");
     vkBridge.send('VKWebAppInit').then(res => {
       var rParams = FAPI.Util.getRequestParameters();
-      console.log(rParams);
       unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.vk_language);
       vkBridge.send("VKWebAppGetUserInfo").then(res => {
         let userName = res.first_name + " " + res.last_name;
@@ -136,13 +116,17 @@
     }
 
     function OKPublish(text, link) {
-      var rParams = FAPI.Util.getRequestParameters();
-      var currentUserId = rParams.vk_user_id;
-      vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
-      "params": {"uid" : currentUserId, "type" : "USER",
-      "attachment": {"media" : [{"type" : "link", "url" : link}]}}});
+      //var rParams = FAPI.Util.getRequestParameters();
+      //var currentUserId = rParams.vk_user_id;
+      //vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
+      //"params": {"uid" : currentUserId, "type" : "USER",
+      //"attachment": {"media" : [{"type" : "link", "url" : link}]}}});
 
       //FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
+
+      vkBridge.send("VKWebAppShowWallPostBox", {"media" : [{"title" : text, "url" : link}]}).catch(err =>{
+        console.log(err);
+      });
     }
 
     function OKInvite(text, link) {
