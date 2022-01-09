@@ -120,17 +120,21 @@
       //var currentUserId = rParams.vk_user_id;
       //vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
       //"params": {"uid" : currentUserId, "type" : "USER",
-      //"attachment": {"media" : [{"type" : "link", "url" : link}]}}});
+      "attachment": {"media" : [{"type" : "link", "url" : link}]}}});
 
       //FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
 
-      vkBridge.send("VKWebAppShowWallPostBox", {"media" : [{"title" : text, "url" : link}]}).catch(err =>{
+      vkBridge.send("VKWebAppShowWallPostBox",  {"media" : [{"type" : "link", "url" : link}]}).catch(err =>{
         console.log(err);
       });
     }
 
     function OKInvite(text, link) {
       FAPI.UI.showInvite(text + '\n' + link);
+
+      vkBridge.send("VKWebAppGetFriends").then(res => {
+        console.log(res);
+      })
     }
 
     // VK
