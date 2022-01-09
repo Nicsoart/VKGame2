@@ -125,19 +125,18 @@
       //FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
 
       vkBridge.send("VKWebAppShowWallPostBox",
-      {"attachment":
-        {"media" : [
-          {"type" : "text", "text" : text},
-          {"type" : "link", "url" : link}
-        ]}
-      }).catch(err =>{
+        //{"attachment":
+          {"media" : [
+            {"type" : "text", "text" : text},
+            {"type" : "link", "url" : link}
+          ]}
+        //}
+      ).catch(err =>{
         console.log(err);
       });
     }
 
     function OKInvite(text, link) {
-      FAPI.UI.showInvite(text + '\n' + link);
-
       vkBridge.send("VKWebAppGetFriends").then(res => {
         console.log(res);
       })
