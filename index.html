@@ -124,10 +124,13 @@
 
       //FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
 
-      vkBridge.send("VKWebAppShowWallPostBox",  {"media" : [
-        {"type" : "text", "text" : text},
-        {"type" : "link", "url" : link}
-      ]}).catch(err =>{
+      vkBridge.send("VKWebAppShowWallPostBox",
+      {"attachment":
+        {"media" : [
+          {"type" : "text", "text" : text},
+          {"type" : "link", "url" : link}
+        ]}
+      }).catch(err =>{
         console.log(err);
       });
     }
