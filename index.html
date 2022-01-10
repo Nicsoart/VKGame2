@@ -137,32 +137,34 @@
     }
 
     function OKInvite(text, link) {
+      vkBridge.send('VKWebAppShare', {"link": link})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    }
+
+    function OKInvite2(text, link) {
       vkBridge.send('OKWebAppCallAPIMethod',
         {"method" : "friends.getByDevices", "request_id" : "getByDevices",
         "params": { "devices" : ["IOS", "ANDROID"]}
       }).then(res => {
-        console.log(res);
-      }).catch(err => {
-        console.log(res);
-      })
-
-      vkBridge.send("VKWebAppGetFriends").then(res => {
-        console.log(res);
-        let usersID = [];
-        usersID.length = res.users.length;
-        for (let i = 0; i < res.users.length; i++) {
-          usersID[i] = res.users[i].id.toString();
-        };
-        console.log(usersID);
-
-        vkBridge.send('OKWebAppCallAPIMethod',
-          {"method" : "friends.appInvite", "request_id" : "appInvite",
-            "params": {"uids" : usersID, "devices" : ["IOS", "ANDROID"]}
+        if (res.response > 0) {
+          vkBridge.send('OKWebAppCallAPIMethod',
+            {"method" : "friends.appInvite", "request_id" : "appInvite",
+              "params": {"uids" : usersID, "devices" : ["IOS", "ANDROID"]}
+            }
           }
-        ).then(res => {
-          console.log(res);
-        }).catch(err => {
-          console.log(res)})
+          ).then(res => {
+            console.log(res);
+          }).catch(err => {
+            console.log(err);
+          })
+        }
+      }).catch(err => {
+        console.log(err);
       })
     }
 
