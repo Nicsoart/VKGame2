@@ -137,6 +137,15 @@
     }
 
     function OKInvite(text, link) {
+      vkBridge.send('OKWebAppCallAPIMethod',
+        {"method" : "friends.getByDevices", "request_id" : "getByDevices",
+        "params": { "devices" : ["IOS", "ANDROID"]}
+      }).then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(res);
+      })
+
       vkBridge.send("VKWebAppGetFriends").then(res => {
         console.log(res);
         let usersID = [];
@@ -145,14 +154,6 @@
           usersID[i] = res.users[i].id.toString();
         };
         console.log(usersID);
-        vkBridge.send('OKWebAppCallAPIMethod',
-          {"method" : "friends.getByDevices", "request_id" : "getByDevices",
-          "params": { "devices" : ["IOS", "ANDROID"]}
-        }).then(res => {
-          console.log(res);
-        }).catch(err => {
-          console.log(res);
-        })
 
         vkBridge.send('OKWebAppCallAPIMethod',
           {"method" : "friends.appInvite", "request_id" : "appInvite",
