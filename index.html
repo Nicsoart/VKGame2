@@ -137,6 +137,7 @@
     }
 
     function OKInvite(text, link) {
+      console.log(link);
       vkBridge.send('VKWebAppShare', {"link": link})
       .then(res => {
         console.log(res);
