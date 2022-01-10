@@ -118,7 +118,7 @@
     function OKPublish(text, link, image) {
       vkBridge.send("VKWebAppShowWallPostBox", {
         "message": text,
-        "attachments": image, link
+        "attachments": "914092532487", link
       }).catch(err =>{
         console.log(err);
       });
