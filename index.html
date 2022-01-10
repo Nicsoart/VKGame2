@@ -137,8 +137,7 @@
     }
 
     function OKInvite(text, link) {
-      let link2 = "https://ok.ru/app/vk_app7978603";
-      vkBridge.send('VKWebAppShare', {"link": link2})
+      vkBridge.send('VKWebAppShare', {"link": "https://ok.ru/app/vk_app7978603"})
       .then(res => {
         console.log(res);
       })
@@ -228,13 +227,21 @@
     }
 
     function VKInvite() {
-      try {
-        vkBridge.send("VKWebAppShowInviteBox").catch(err => {
-          VK.callMethod("showInviteBox");
-        })
-      } catch(err) {
-        VK.callMethod("showInviteBox");
-      }
+      //try {
+      //  vkBridge.send("VKWebAppShowInviteBox").catch(err => {
+      //    VK.callMethod("showInviteBox");
+      //  })
+      //} catch(err) {
+      //  VK.callMethod("showInviteBox");
+      //}
+
+      vkBridge.send('VKWebAppShare', {"link": "https://ok.ru/app/vk_app7978603"})
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
     }
 
     function VKMobileInvite() {
