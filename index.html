@@ -137,8 +137,8 @@
     }
 
     function OKInvite(text, link) {
-      console.log(link);
-      vkBridge.send('VKWebAppShare', {"link": link})
+      let link2 = "https://ok.ru/app/vk_app7978603";
+      vkBridge.send('VKWebAppShare', {"link": link2})
       .then(res => {
         console.log(res);
       })
