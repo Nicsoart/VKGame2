@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build86.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build88.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -115,29 +115,10 @@
       ShowVKRewardVideo();
     }
 
-    function OKPublish(text, link) {
-      //var rParams = FAPI.Util.getRequestParameters();
-      //var currentUserId = rParams.vk_user_id;
-      //vkBridge.send('OKWebAppCallAPIMethod', {"method" : "mediatopic.post", "request_id" : currentUserId,
-      //"params": {"uid" : currentUserId, "type" : "USER",
-      //"attachment": {"media" : [{"type" : "link", "url" : link}]}}});
-
-      //FAPI.UI.postMediatopic({"media" : [{"title" : text, "url" : link}]});
-
-      //vkBridge.send("VKWebAppShowWallPostBox",
-      //  {"attachment":
-      //    {"media" : [
-      //      {"type" : "text", "text" : text},
-      //      {"type" : "link", "url" : link}
-      //    ]}
-      //  }
-      //).catch(err =>{
-      //  console.log(err);
-      //});
-
+    function OKPublish(text, link, image) {
       vkBridge.send("VKWebAppShowWallPostBox", {
         "message": text,
-        "attachments": link
+        "attachments": image, link
       }).catch(err =>{
         console.log(err);
       });
@@ -252,10 +233,10 @@
       })
     }
 
-    function VKMobilePublish(text, link) {
+    function VKMobilePublish(text, link, image) {
       vkBridge.send("VKWebAppShowWallPostBox", {
         "message": text,
-        "attachments": link
+        "attachments": image, link
       });
     }
 
