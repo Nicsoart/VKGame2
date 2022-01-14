@@ -331,9 +331,11 @@
         renderTo: 'yandex_rtb_' + fullscreenID,
         blockId: fullscreenID,
         onError: (data) => {
+          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseFullScreen');
         },
         onRender: (data) => {
+          console.log(data);
           unityInstance.SendMessage('AdsManager', 'FullScreenLoaded');
         }
       })
