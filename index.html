@@ -9,15 +9,30 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build88.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build91.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
-    var fullscreenID = 'R-A-1324864-1';
-    var mobilefullscreenID = 'R-A-1324864-4';
-    var horizontalbannerID = 'R-A-1324864-2';
-    var mobilebannerID = 'R-A-1324864-5';
-    var rewardvideoID = 'R-A-1324864-3';
+    var fullscreenID;
+    var mobilefullscreenID;
+    var horizontalbannerID;
+    var mobilebannerID;
+    var rewardvideoID;
+    var mobilerewardvideoID;
+
+    var VKfullscreenID = 'R-A-1343857-1';
+    var VKmobilefullscreenID = 'R-A-1343857-4';
+    var VKhorizontalbannerID = 'R-A-1343857-2';
+    var VKmobilebannerID = 'R-A-1343857-6';
+    var VKrewardvideoID = 'R-A-1343857-3';
+    var VKmobilerewardvideoID = 'R-A-1343857-5';
+
+    var OKfullscreenID = 'R-A-1462161-1';
+    var OKmobilefullscreenID = 'R-A-1462161-4';
+    var OKhorizontalbannerID = 'R-A-1462161-2';
+    var OKmobilebannerID = 'R-A-1462161-6';
+    var OKrewardvideoID = 'R-A-1462161-3';
+    var mobilerewardvideoID = 'R-A-1462161-5';
 
     var text;
     var link;
@@ -39,20 +54,42 @@
 
     <div id="unityContainer" style="position:relative; width: 100vw; height: 100vh"></div>
 
-      <!-- Full Screen -->
-    <div id="yandex_rtb_R-A-1324864-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+    <!-- VK Full Screen -->
+    <div id="yandex_rtb_R-A-1343857-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
-    <!-- Mobile Full Screen -->
-    <div id="yandex_rtb_R-A-1324864-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+    <!-- VK Mobile Full Screen -->
+    <div id="yandex_rtb_R-A-1343857-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
-    <!-- Horizontal Banner -->
-    <div id="yandex_rtb_R-A-1324864-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh"></div>
+    <!-- VK Horizontal Banner -->
+    <div id="yandex_rtb_R-A-1343857-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh"></div>
 
-    <!-- Mobile Banner -->
-    <div id="yandex_rtb_R-A-1324864-5" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh"></div>
+    <!-- VK Mobile Banner -->
+    <div id="yandex_rtb_R-A-1343857-6" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh"></div>
 
-    <!-- Reward Video -->
-    <div id="yandex_rtb_R-A-1324864-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+    <!-- VK Reward Video -->
+    <div id="yandex_rtb_R-A-1343857-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+
+    <!-- VK Mobile Reward Video -->
+    <div id="yandex_rtb_R-A-1343857-5" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+
+
+    <!-- OK Full Screen -->
+    <div id="yandex_rtb_R-A-1462161-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+
+    <!-- OK Mobile Full Screen -->
+    <div id="yandex_rtb_R-A-1462161-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+
+    <!-- OK Horizontal Banner -->
+    <div id="yandex_rtb_R-A-1462161-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh"></div>
+
+    <!-- OK Mobile Banner -->
+    <div id="yandex_rtb_R-A-1462161-6" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh"></div>
+
+    <!-- OK Reward Video -->
+    <div id="yandex_rtb_R-A-1462161-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
+
+    <!-- OK Mobile Reward Video -->
+    <div id="yandex_rtb_R-A-1462161-5" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     </div>
 
@@ -60,13 +97,21 @@
 
 // Initialization
     function AdsInitialization() {
-      document.getElementById('yandex_rtb_' + fullscreenID).style.display = 'none';
-      document.getElementById('yandex_rtb_' + mobilefullscreenID).style.display = 'none';
-      document.getElementById('yandex_rtb_' + horizontalbannerID).style.display = 'none';
-      document.getElementById('yandex_rtb_' + mobilebannerID).style.display = 'none';
-      document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + VKfullscreenID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + VKmobilefullscreenID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + VKhorizontalbannerID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + VKmobilebannerID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + VKrewardvideoID).style.display = 'none';
+
+      document.getElementById('yandex_rtb_' + OKfullscreenID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + OKmobilefullscreenID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + OKhorizontalbannerID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + OKmobilebannerID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + OKrewardvideoID).style.display = 'none';
 
       unityInstance.SendMessage('AdsManager', 'VerticalInitialization', 1);
+
+
     }
 
     function PlatformInitialization() {
@@ -76,12 +121,27 @@
         if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
           console.log("ok");
           unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
+          fullscreenID = OKfullscreenID;
+          mobilefullscreenID = OKmobilefullscreenID;
+          horizontalbannerID = OKhorizontalbannerID;
+          mobilebannerID = OKmobilebannerID;
+          rewardvideoID = OKrewardvideoID;
         } else {
           console.log("vk");
           unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
+          fullscreenID = VKfullscreenID;
+          mobilefullscreenID = VKmobilefullscreenID;
+          horizontalbannerID = VKhorizontalbannerID;
+          mobilebannerID = VKmobilebannerID;
+          rewardvideoID = VKrewardvideoID;
         }
       } catch (e) {
         unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
+        fullscreenID = VKfullscreenID;
+        mobilefullscreenID = VKmobilefullscreenID;
+        horizontalbannerID = VKhorizontalbannerID;
+        mobilebannerID = VKmobilebannerID;
+        rewardvideoID = VKrewardvideoID;
       }
     }
 
@@ -93,7 +153,6 @@
   }
 
   function OKInitialization() {
-    console.log("OKInitialization");
     vkBridge.send('VKWebAppInit').then(res => {
       var rParams = FAPI.Util.getRequestParameters();
       unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.vk_language);
@@ -104,6 +163,14 @@
         unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', userPhoto);
         unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
       })
+    });
+    vkBridge.send('OKWebAppCallAPIMethod',
+      {"method" : "friends.getByDevices", "request_id" : "getByDevices",
+      "params": { "devices" : ["IOS", "ANDROID"]}
+    }).then(res => {
+      if (res.response == 0) {
+        unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
+      }
     })
   }
 
@@ -118,7 +185,7 @@
     function OKPublish(text, link, image) {
       vkBridge.send("VKWebAppShowWallPostBox", {
         "message": text,
-        "attachments": "pphotos/914092532487", link
+        "attachments": link
       }).catch(err =>{
         console.log(err);
       });
@@ -133,18 +200,16 @@
         if (res.response > 0) {
           vkBridge.send('OKWebAppCallAPIMethod',
             {"method" : "friends.appInvite", "request_id" : "appInvite",
-              "params": {"uids" : usersID, "devices" : ["IOS", "ANDROID"]}
+              "params": {"uids" : usersID, "text" : text + "\n" + link, "devices" : ["IOS", "ANDROID"]}
             }
-          ).then(res => {
-            console.log(res);
-          }).catch(err => {
-            console.log(err);
+          ).catch(err => {
+            unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
           })
         } else {
-          console.log("no ANDROID or IOS friends");
+          unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
         }
       }).catch(err => {
-        console.log(err);
+        unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
       })
     }
 
@@ -349,7 +414,7 @@
         renderTo: 'yandex_rtb_' + rewardvideoID,
         blockId: rewardvideoID,
         onError: (data) => {
-          unityInstance.SendMessage('AdsManager', 'CloseMobileCustomRewardVideo');
+          unityInstance.SendMessage('AdsManager', 'CloseCustomRewardVideo');
         },
         onRender: (data) => {
           unityInstance.SendMessage('AdsManager', 'CustomRewardVideoLoaded');
@@ -361,5 +426,6 @@
       document.getElementById('yandex_rtb_' + rewardvideoID).style.display = 'none';
     }
   </script>
+
   </body>
 </html>
