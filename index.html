@@ -326,6 +326,7 @@
 
 // Full Screen
     function ShowFullScreen() {
+      console.log('ShowFullScreen');
       document.getElementById('yandex_rtb_' + fullscreenID).style.display = 'block';
       Ya.Context.AdvManager.render({
         renderTo: 'yandex_rtb_' + fullscreenID,
