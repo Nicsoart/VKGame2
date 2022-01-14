@@ -32,7 +32,7 @@
     var OKhorizontalbannerID = 'R-A-1462161-2';
     var OKmobilebannerID = 'R-A-1462161-6';
     var OKrewardvideoID = 'R-A-1462161-3';
-    var mobilerewardvideoID = 'R-A-1462161-5';
+    var OKmobilerewardvideoID = 'R-A-1462161-5';
 
     var text;
     var link;
@@ -102,12 +102,15 @@
       document.getElementById('yandex_rtb_' + VKhorizontalbannerID).style.display = 'none';
       document.getElementById('yandex_rtb_' + VKmobilebannerID).style.display = 'none';
       document.getElementById('yandex_rtb_' + VKrewardvideoID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + VKmobilerewardvideoID).style.display = 'none';
+
 
       document.getElementById('yandex_rtb_' + OKfullscreenID).style.display = 'none';
       document.getElementById('yandex_rtb_' + OKmobilefullscreenID).style.display = 'none';
       document.getElementById('yandex_rtb_' + OKhorizontalbannerID).style.display = 'none';
       document.getElementById('yandex_rtb_' + OKmobilebannerID).style.display = 'none';
       document.getElementById('yandex_rtb_' + OKrewardvideoID).style.display = 'none';
+      document.getElementById('yandex_rtb_' + OKmobilerewardvideoID).style.display = 'none';
 
       unityInstance.SendMessage('AdsManager', 'VerticalInitialization', 1);
 
