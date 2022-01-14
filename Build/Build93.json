@@ -1,0 +1,17 @@
+{
+"companyName": "NicsoGames",
+"productName": "AdvertisingTest",
+"productVersion": "0.1",
+"dataUrl": "Build93.data.unityweb",
+"wasmCodeUrl": "Build93.wasm.code.unityweb",
+"wasmFrameworkUrl": "Build93.wasm.framework.unityweb",
+"wasmSymbolsUrl": "Build93.wasm.symbols.unityweb",
+"graphicsAPI": ["WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Light",
+"backgroundColor": "#FFFFFF",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.4.20f1"
+}
