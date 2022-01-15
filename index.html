@@ -301,6 +301,7 @@
     }
 
     function VKMobilePublish(text, link, image) {
+      console.log(link);
       vkBridge.send("VKWebAppShowWallPostBox", {
         "message": text,
         "attachments": image, link
