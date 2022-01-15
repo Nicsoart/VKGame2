@@ -235,6 +235,7 @@
         });
 
         vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
+          console.log(res);
           if (res.is_feature_supported === false) {
             unityInstance.SendMessage('VKMechanicsController', 'Added');
           } else {
