@@ -250,6 +250,7 @@
         unityInstance.SendMessage('AdsManager', 'AdShowed');
       })
       .catch(error =>{
+        console.log(error);
         unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
       });
     }
@@ -260,6 +261,7 @@
         unityInstance.SendMessage('AdsManager', 'GetReward');
       })
       .catch(error => {
+        console.log(error);
         unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
       });
     }
@@ -327,7 +329,6 @@
           unityInstance.SendMessage('AdsManager', 'CloseFullScreen');
         },
         onRender: (data) => {
-          console.log(data);
           unityInstance.SendMessage('AdsManager', 'FullScreenLoaded');
         }
       })
@@ -339,6 +340,7 @@
         renderTo: 'yandex_rtb_' + mobilefullscreenID,
         blockId: mobilefullscreenID,
         onError: (data) => {
+          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseFullScreen');
         },
         onRender: (data) => {
@@ -395,6 +397,7 @@
         renderTo: 'yandex_rtb_' + rewardvideoID,
         blockId: rewardvideoID,
         onError: (data) => {
+          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseCustomRewardVideo');
         },
         onRender: (data) => {
@@ -413,6 +416,7 @@
         renderTo: 'yandex_rtb_' + rewardvideoID,
         blockId: rewardvideoID,
         onError: (data) => {
+          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseCustomRewardVideo');
         },
         onRender: (data) => {
