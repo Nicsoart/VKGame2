@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build93.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build94.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -177,21 +177,11 @@
   }
 
     function ShowOKInterstational() {
-      ShowVKInterstational();
+      unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
     }
 
     function ShowOKRewardVideo() {
-      ShowVKRewardVideo();
-    }
-
-    function OKPublish(text, link, image) {
-      vkBridge.send("VKWebAppShowWallPostBox", {
-        "message": text,
-        "attachments": link
-      }).catch(err =>{
-        console.log(err);
-      });
-
+      unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
     }
 
     function OKInvite(text, link) {
@@ -255,13 +245,13 @@
     }
 
     function ShowVKInterstational() {
-      //vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
-      //.then(data =>{
-        //unityInstance.SendMessage('AdsManager', 'AdShowed');
-      //})
-      //.catch(error =>{
+      vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
+      .then(data =>{
+        unityInstance.SendMessage('AdsManager', 'AdShowed');
+      })
+      .catch(error =>{
         unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
-      //});
+      });
     }
 
     function ShowVKRewardVideo() {
@@ -275,13 +265,9 @@
     }
 
     function VKInvite() {
-      try {
-        vkBridge.send("VKWebAppShowInviteBox").catch(err => {
-          VK.callMethod("showInviteBox");
-        })
-      } catch(err) {
+      vkBridge.send("VKWebAppShowInviteBox").catch(err => {
         VK.callMethod("showInviteBox");
-      }
+      })
     }
 
     function VKMobileInvite() {
@@ -300,11 +286,10 @@
       })
     }
 
-    function VKMobilePublish(text, link, image) {
-      console.log(link);
+    function VKMobilePublish(text, link) {
       vkBridge.send("VKWebAppShowWallPostBox", {
         "message": text,
-        "attachments": image, link
+        "attachments": link
       });
     }
 
