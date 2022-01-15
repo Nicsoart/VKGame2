@@ -113,8 +113,6 @@
       document.getElementById('yandex_rtb_' + OKmobilerewardvideoID).style.display = 'none';
 
       unityInstance.SendMessage('AdsManager', 'VerticalInitialization', 1);
-
-
     }
 
     function PlatformInitialization() {
@@ -372,6 +370,7 @@
         renderTo: 'yandex_rtb_' + horizontalbannerID,
         blockId: horizontalbannerID,
         onError: (data) => {
+          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseBanner');
         }
       })
@@ -383,6 +382,7 @@
         renderTo: 'yandex_rtb_' + mobilebannerID,
         blockId: mobilebannerID,
         onError: (data) => {
+          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseBanner');
         }
       })
