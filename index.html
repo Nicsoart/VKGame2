@@ -320,7 +320,12 @@
     }
 
     function VKFavorite() {
-      vkBridge.send("VKWebAppAddToFavorites");
+      vkBridge.send("VKWebAppAddToFavorites").then(res => {
+        console.log(res);
+        if (res.result == true) {
+          unityInstance.SendMessage('VKMechanicsController', 'InFavorite');
+        }
+      })
     }
 
 // Full Screen
