@@ -245,6 +245,7 @@
     }
 
     function ShowVKInterstational() {
+      console.log('ShowVKInterstational');
       vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
       .then(data =>{
         unityInstance.SendMessage('AdsManager', 'AdShowed');
@@ -256,6 +257,7 @@
     }
 
     function ShowVKRewardVideo() {
+      console.log('ShowVKRewardVideo');
       vkBridge.send("VKWebAppShowNativeAds", {ad_format:"reward"})
       .then(data => {
         unityInstance.SendMessage('AdsManager', 'GetReward');
