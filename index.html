@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build94.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build96.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -235,7 +235,6 @@
         });
 
         vkBridge.send("VKWebAppAddToHomeScreenInfo").then(res => {
-          console.log(res);
           if (res.is_feature_supported === false) {
             unityInstance.SendMessage('VKMechanicsController', 'Added');
           } else {
