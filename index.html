@@ -36,6 +36,7 @@
 
     var text;
     var link;
+    var okplatform = false;
     </script>
 
     <!-- Yandex.RTB -->
@@ -122,17 +123,21 @@
         if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
           console.log("ok");
           unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
-          //fullscreenID = OKfullscreenID;
-          //mobilefullscreenID = OKmobilefullscreenID;
-          //horizontalbannerID = OKhorizontalbannerID;
-          //mobilebannerID = OKmobilebannerID;
-          //rewardvideoID = OKrewardvideoID;
+          fullscreenID = OKfullscreenID;
+          mobilefullscreenID = OKmobilefullscreenID;
+          horizontalbannerID = OKhorizontalbannerID;
+          mobilebannerID = OKmobilebannerID;
+          rewardvideoID = OKrewardvideoID;
 
-          fullscreenID = VKfullscreenID;
-          mobilefullscreenID = VKmobilefullscreenID;
-          horizontalbannerID = VKhorizontalbannerID;
-          mobilebannerID = VKmobilebannerID;
-          rewardvideoID = VKrewardvideoID;
+        } else if (rParams.api_server !== "undefined") {
+          console.log("ok platform");
+          okplatform = true;
+          unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
+          fullscreenID = OKfullscreenID;
+          mobilefullscreenID = OKmobilefullscreenID;
+          horizontalbannerID = OKhorizontalbannerID;
+          mobilebannerID = OKmobilebannerID;
+          rewardvideoID = OKrewardvideoID;
         } else {
           console.log("vk");
           unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
@@ -161,30 +166,47 @@
   }
 
   function OKInitialization() {
-    vkBridge.send('VKWebAppInit').then(res => {
-      var rParams = FAPI.Util.getRequestParameters();
-      unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.vk_language);
-      vkBridge.send("VKWebAppGetUserInfo").then(res => {
-        let userName = res.first_name + " " + res.last_name;
-        let userPhoto = res.photo_200;
-        unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
-        unityInstance.SendMessage('PlayerManager', 'GetPlayerPhoto', userPhoto);
-        unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
+    if (okplatform == false) {
+      vkBridge.send('VKWebAppInit').then(res => {
+        var rParams = FAPI.Util.getRequestParameters();
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.vk_language);
+        vkBridge.send("VKWebAppGetUserInfo").then(res => {
+          let userName = res.first_name + " " + res.last_name;
+          unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
+          unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
+        })
+      });
+      vkBridge.send('OKWebAppCallAPIMethod',
+        {"method" : "friends.getByDevices", "request_id" : "getByDevices",
+        "params": { "devices" : ["IOS", "ANDROID"]}
+      }).then(res => {
+        if (res.response == 0) {
+          unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
+        }
       })
-    });
-    vkBridge.send('OKWebAppCallAPIMethod',
-      {"method" : "friends.getByDevices", "request_id" : "getByDevices",
-      "params": { "devices" : ["IOS", "ANDROID"]}
-    }).then(res => {
-      if (res.response == 0) {
-        unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
-      }
-    })
+    } else {
+      var rParams = FAPI.Util.getRequestParameters();
+
+      FAPI.init(rParams.api_server, rParams.apiconnection,
+        function() {
+          unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.ip_geo_location);
+          unityInstance.SendMessage('PlayerManager', 'GetPlayerName', rParams.user_name);
+          unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
+        },
+        function(error) {
+            alert("Ошибка инициализации");
+        }
+      )
+    }
   }
 
     function ShowOKInterstational() {
-      console.log('ShowOKInterstational');
-      unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
+      if (okplatform == false) {
+        console.log('ShowOKInterstational');
+        unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
+      } else {
+
+      }
     }
 
     function ShowOKRewardVideo() {
