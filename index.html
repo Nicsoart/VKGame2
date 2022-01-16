@@ -122,11 +122,17 @@
         if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
           console.log("ok");
           unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
-          fullscreenID = OKfullscreenID;
-          mobilefullscreenID = OKmobilefullscreenID;
-          horizontalbannerID = OKhorizontalbannerID;
-          mobilebannerID = OKmobilebannerID;
-          rewardvideoID = OKrewardvideoID;
+          //fullscreenID = OKfullscreenID;
+          //mobilefullscreenID = OKmobilefullscreenID;
+          //horizontalbannerID = OKhorizontalbannerID;
+          //mobilebannerID = OKmobilebannerID;
+          //rewardvideoID = OKrewardvideoID;
+
+          fullscreenID = VKfullscreenID;
+          mobilefullscreenID = VKmobilefullscreenID;
+          horizontalbannerID = VKhorizontalbannerID;
+          mobilebannerID = VKmobilebannerID;
+          rewardvideoID = VKrewardvideoID;
         } else {
           console.log("vk");
           unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
