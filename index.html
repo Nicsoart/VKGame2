@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build98.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build99.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -136,16 +136,16 @@
         var rParams = FAPI.Util.getRequestParameters();
         console.log(rParams);
         if (rParams.api_server !== "undefined") {
-          console.log("ok");
+          console.log("ok params");
           unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
           OKAdsInitialization();
         } else {
-          console.log("vk");
+          console.log("vk params");
           unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
           VKAdsInitialization();
         }
       } catch (e) {
-        console.log("vk");
+        console.log("vk error");
         unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
         VKAdsInitialization();
       }
