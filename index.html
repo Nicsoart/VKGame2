@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build99.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build100.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -158,6 +158,7 @@
     console.log(data);
 
     if (method === "showAd") {
+      unityInstance.SendMessage('AdsManager', 'CloseLoading');
       if (data === "ad_shown") {
         unityInstance.SendMessage('AdsManager', 'AdShowed');
       } else if (data === "no_ads" || data === "call_limit") {
@@ -168,10 +169,12 @@
       if (data === "ready") {
         FAPI.UI.showLoadedAd();
       } else if (data === "empty" || data === "call_limit" || data === "disabled" || data === "no_ads") {
+        unityInstance.SendMessage('AdsManager', 'CloseLoading');
         unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
       }
 
     } else if (method === "showLoadedAd") {
+      unityInstance.SendMessage('AdsManager', 'CloseLoading');
       if (data === "complete") {
         unityInstance.SendMessage('AdsManager', 'GetReward');
       } else if (data === "not_prepared" || data === "mp4_not_supported") {
@@ -195,10 +198,12 @@
   }
 
     function ShowOKInterstational() {
+      unityInstance.SendMessage('AdsManager', 'OpenLoading');
       FAPI.UI.showAd();
     }
 
     function ShowOKRewardVideo() {
+      unityInstance.SendMessage('AdsManager', 'OpenLoading');
       FAPI.UI.loadAd();
     }
 
@@ -254,25 +259,27 @@
     }
 
     function ShowVKInterstational() {
-      console.log('ShowVKInterstational');
+      unityInstance.SendMessage('AdsManager', 'OpenLoading');
       vkBridge.send("VKWebAppShowNativeAds", {ad_format:"interstitial"})
       .then(data =>{
+        unityInstance.SendMessage('AdsManager', 'CloseLoading');
         unityInstance.SendMessage('AdsManager', 'AdShowed');
       })
       .catch(error =>{
-        console.log(error);
+        unityInstance.SendMessage('AdsManager', 'CloseLoading');
         unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
       });
     }
 
     function ShowVKRewardVideo() {
-      console.log('ShowVKRewardVideo');
+      unityInstance.SendMessage('AdsManager', 'OpenLoading');
       vkBridge.send("VKWebAppShowNativeAds", {ad_format:"reward"})
       .then(data => {
+        unityInstance.SendMessage('AdsManager', 'CloseLoading');
         unityInstance.SendMessage('AdsManager', 'GetReward');
       })
       .catch(error => {
-        console.log(error);
+        unityInstance.SendMessage('AdsManager', 'CloseLoading');
         unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
       });
     }
@@ -284,7 +291,6 @@
     }
 
     function VKMobileInvite() {
-      console.log("VKMobileInvite");
       vkBridge.send("VKWebAppShowInviteBox");
     }
 
@@ -301,11 +307,10 @@
     }
 
     function VKMobilePublish(text, link) {
-      console.log(text + ", " + link);
       vkBridge.send("VKWebAppShowWallPostBox", {
         "message": text,
         "attachments": link
-      });
+      })
     }
 
     function VKAddInMenu() {
@@ -322,7 +327,6 @@
 
     function VKFavorite() {
       vkBridge.send("VKWebAppAddToFavorites").then(res => {
-        console.log(res);
         if (res.result == true) {
           unityInstance.SendMessage('VKMechanicsController', 'InFavorite');
         }
@@ -331,13 +335,11 @@
 
 // Full Screen
     function ShowFullScreen() {
-      console.log('ShowFullScreen');
       document.getElementById('yandex_rtb_' + fullscreenID).style.display = 'block';
       Ya.Context.AdvManager.render({
         renderTo: 'yandex_rtb_' + fullscreenID,
         blockId: fullscreenID,
         onError: (data) => {
-          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseFullScreen');
         },
         onRender: (data) => {
@@ -352,7 +354,6 @@
         renderTo: 'yandex_rtb_' + mobilefullscreenID,
         blockId: mobilefullscreenID,
         onError: (data) => {
-          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseFullScreen');
         },
         onRender: (data) => {
@@ -376,7 +377,6 @@
         renderTo: 'yandex_rtb_' + horizontalbannerID,
         blockId: horizontalbannerID,
         onError: (data) => {
-          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseBanner');
         }
       })
@@ -388,7 +388,6 @@
         renderTo: 'yandex_rtb_' + mobilebannerID,
         blockId: mobilebannerID,
         onError: (data) => {
-          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseBanner');
         }
       })
@@ -409,7 +408,6 @@
         renderTo: 'yandex_rtb_' + rewardvideoID,
         blockId: rewardvideoID,
         onError: (data) => {
-          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseCustomRewardVideo');
         },
         onRender: (data) => {
@@ -428,7 +426,6 @@
         renderTo: 'yandex_rtb_' + rewardvideoID,
         blockId: rewardvideoID,
         onError: (data) => {
-          console.log(data);
           unityInstance.SendMessage('AdsManager', 'CloseCustomRewardVideo');
         },
         onRender: (data) => {
