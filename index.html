@@ -153,6 +153,10 @@
 
 // OK
   function API_callback(method, result, data) {
+    console.log(method);
+    console.log(result);
+    console.log(data);
+
     if (method === "showAd") {
       if (data === "ad_shown") {
         unityInstance.SendMessage('AdsManager', 'AdShowed');
