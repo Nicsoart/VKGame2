@@ -55,41 +55,41 @@
     <div id="unityContainer" style="position:relative; width: 100vw; height: 100vh; background: #CD5C5C"></div>
 
     <!-- VK Full Screen -->
-    <div id="yandex_rtb_R-A-1343857-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #FFD700"></div>
+    <div id="yandex_rtb_R-A-1343857-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     <!-- VK Mobile Full Screen -->
-    <div id="yandex_rtb_R-A-1343857-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #FFA500"></div>
+    <div id="yandex_rtb_R-A-1343857-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     <!-- VK Horizontal Banner -->
-    <div id="yandex_rtb_R-A-1343857-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh; background: #C71585"></div>
+    <div id="yandex_rtb_R-A-1343857-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh"></div>
 
     <!-- VK Mobile Banner -->
-    <div id="yandex_rtb_R-A-1343857-6" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh; background: #8A2BE2"></div>
+    <div id="yandex_rtb_R-A-1343857-6" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh"></div>
 
     <!-- VK Reward Video -->
-    <div id="yandex_rtb_R-A-1343857-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #8B4513"></div>
+    <div id="yandex_rtb_R-A-1343857-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     <!-- VK Mobile Reward Video -->
-    <div id="yandex_rtb_R-A-1343857-5" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #4682B4"></div>
+    <div id="yandex_rtb_R-A-1343857-5" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
 
     <!-- OK Full Screen -->
-    <div id="yandex_rtb_R-A-1462161-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #7FFF00"></div>
+    <div id="yandex_rtb_R-A-1462161-1" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     <!-- OK Mobile Full Screen -->
-    <div id="yandex_rtb_R-A-1462161-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #DC143C"></div>
+    <div id="yandex_rtb_R-A-1462161-4" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     <!-- OK Horizontal Banner -->
-    <div id="yandex_rtb_R-A-1462161-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh; background: #FFA500"></div>
+    <div id="yandex_rtb_R-A-1462161-2" style="position: absolute; bottom: 0;  width: 100vw; height: 10vh"></div>
 
     <!-- OK Mobile Banner -->
-    <div id="yandex_rtb_R-A-1462161-6" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh; background: #CD853F"></div>
+    <div id="yandex_rtb_R-A-1462161-6" style="position: absolute;  bottom: 0; width: 100vw; height: 10vh"></div>
 
     <!-- OK Reward Video -->
-    <div id="yandex_rtb_R-A-1462161-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #A52A2A"></div>
+    <div id="yandex_rtb_R-A-1462161-3" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     <!-- OK Mobile Reward Video -->
-    <div id="yandex_rtb_R-A-1462161-5" style="position: absolute; top: 16%; width: 100vw; height: 67vh; background: #000080"></div>
+    <div id="yandex_rtb_R-A-1462161-5" style="position: absolute; top: 16%; width: 100vw; height: 67vh"></div>
 
     </div>
 
@@ -134,6 +134,7 @@
     function PlatformInitialization() {
       try {
         var rParams = FAPI.Util.getRequestParameters();
+        console.log(rParams);
         if (rParams.api_server !== "undefined") {
           console.log("ok");
           unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
