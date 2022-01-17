@@ -167,7 +167,7 @@
     } else if (method === "loadAd") {
       if (data === "ready") {
         FAPI.UI.showLoadedAd();
-      } else if (data === "empty" || data === "call_limit" || data === "disabled") {
+      } else if (data === "empty" || data === "call_limit" || data === "disabled" || data === "no_ads") {
         unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
       }
 
