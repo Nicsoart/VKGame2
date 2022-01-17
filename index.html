@@ -9,7 +9,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build97.json", {onProgress: UnityProgress});
+      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/Build98.json", {onProgress: UnityProgress});
     </script>
 
     <script type = "text/javascript" language = "javascript">
@@ -36,7 +36,6 @@
 
     var text;
     var link;
-    var okplatform = false;
     </script>
 
     <!-- Yandex.RTB -->
@@ -116,123 +115,98 @@
       unityInstance.SendMessage('AdsManager', 'VerticalInitialization', 1);
     }
 
+    function VKAdsInitialization() {
+      fullscreenID = VKfullscreenID;
+      mobilefullscreenID = VKmobilefullscreenID;
+      horizontalbannerID = VKhorizontalbannerID;
+      mobilebannerID = VKmobilebannerID;
+      rewardvideoID = VKrewardvideoID;
+    }
+
+    function OKAdsInitialization() {
+      fullscreenID = OKfullscreenID;
+      mobilefullscreenID = OKmobilefullscreenID;
+      horizontalbannerID = OKhorizontalbannerID;
+      mobilebannerID = OKmobilebannerID;
+      rewardvideoID = OKrewardvideoID;
+    }
+
     function PlatformInitialization() {
       try {
         var rParams = FAPI.Util.getRequestParameters();
-        console.log(rParams);
-        if (rParams.vk_client !== "undefined" && rParams.vk_client == "ok") {
+        if (rParams.api_server !== "undefined") {
           console.log("ok");
           unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
-          fullscreenID = OKfullscreenID;
-          mobilefullscreenID = OKmobilefullscreenID;
-          horizontalbannerID = OKhorizontalbannerID;
-          mobilebannerID = OKmobilebannerID;
-          rewardvideoID = OKrewardvideoID;
-
-        } else if (rParams.api_server !== "undefined") {
-          console.log("ok platform");
-          okplatform = true;
-          unityInstance.SendMessage('VKMechanicsController', 'OKInitialization');
-          fullscreenID = OKfullscreenID;
-          mobilefullscreenID = OKmobilefullscreenID;
-          horizontalbannerID = OKhorizontalbannerID;
-          mobilebannerID = OKmobilebannerID;
-          rewardvideoID = OKrewardvideoID;
+          OKAdsInitialization();
         } else {
           console.log("vk");
           unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
-          fullscreenID = VKfullscreenID;
-          mobilefullscreenID = VKmobilefullscreenID;
-          horizontalbannerID = VKhorizontalbannerID;
-          mobilebannerID = VKmobilebannerID;
-          rewardvideoID = VKrewardvideoID;
+          VKAdsInitialization();
         }
       } catch (e) {
         console.log("vk");
         unityInstance.SendMessage('VKMechanicsController', 'VKInitialization');
-        fullscreenID = VKfullscreenID;
-        mobilefullscreenID = VKmobilefullscreenID;
-        horizontalbannerID = VKhorizontalbannerID;
-        mobilebannerID = VKmobilebannerID;
-        rewardvideoID = VKrewardvideoID;
+        VKAdsInitialization();
       }
     }
 
 // OK
   function API_callback(method, result, data) {
-    console.log(method);
-    console.log(result);
-    console.log(data);
+    if (method === "showAd") {
+      if (data === "ad_shown") {
+        unityInstance.SendMessage('AdsManager', 'AdShowed');
+      } else if (data === "no_ads" || data === "call_limit") {
+        unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
+      }
+
+    } else if (method === "loadAd") {
+      if (data === "ready") {
+        FAPI.UI.showLoadedAd();
+      } else if (data === "empty" || data === "call_limit" || data === "disabled") {
+        unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
+      }
+
+    } else if (method === "showLoadedAd") {
+      if (data === "complete") {
+        unityInstance.SendMessage('AdsManager', 'GetReward');
+      } else if (data === "not_prepared" || data === "mp4_not_supported") {
+        unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
+      }
+    }
   }
 
   function OKInitialization() {
-    if (okplatform == false) {
-      vkBridge.send('VKWebAppInit').then(res => {
-        var rParams = FAPI.Util.getRequestParameters();
-        unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.vk_language);
-        vkBridge.send("VKWebAppGetUserInfo").then(res => {
-          let userName = res.first_name + " " + res.last_name;
-          unityInstance.SendMessage('PlayerManager', 'GetPlayerName', userName);
-          unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
-        })
-      });
-      vkBridge.send('OKWebAppCallAPIMethod',
-        {"method" : "friends.getByDevices", "request_id" : "getByDevices",
-        "params": { "devices" : ["IOS", "ANDROID"]}
-      }).then(res => {
-        if (res.response == 0) {
-          unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
-        }
-      })
-    } else {
-      var rParams = FAPI.Util.getRequestParameters();
-
-      FAPI.init(rParams.api_server, rParams.apiconnection,
-        function() {
-          unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.ip_geo_location);
-          unityInstance.SendMessage('PlayerManager', 'GetPlayerName', rParams.user_name);
-          unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
-        },
-        function(error) {
-            alert("Ошибка инициализации");
-        }
-      )
-    }
+    var rParams = FAPI.Util.getRequestParameters();
+    FAPI.init(rParams.api_server, rParams.apiconnection,
+      function() {
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerLanguage', rParams.ip_geo_location);
+        unityInstance.SendMessage('PlayerManager', 'GetPlayerName', rParams.user_name);
+        unityInstance.SendMessage('PlayerManager', 'PlayerAuthorized');
+      },
+      function(error) {
+          alert("Ошибка инициализации");
+      }
+    )
   }
 
     function ShowOKInterstational() {
-      if (okplatform == false) {
-        console.log('ShowOKInterstational');
-        unityInstance.SendMessage('AdsManager', 'TryToLoadFullScreen');
-      } else {
-        FAPI.UI.showAd();
-      }
+      FAPI.UI.showAd();
     }
 
     function ShowOKRewardVideo() {
-      console.log('ShowOKRewardVideo');
-      unityInstance.SendMessage('AdsManager', 'TryToLoadCustomRewardVideo');
+      FAPI.UI.loadAd();
     }
 
     function OKInvite(text, link) {
-      vkBridge.send('OKWebAppCallAPIMethod',
-        {"method" : "friends.getByDevices", "request_id" : "getByDevices",
-        "params": { "devices" : ["IOS", "ANDROID"]}
-      }).then(res => {
-        if (res.response > 0) {
-          vkBridge.send('OKWebAppCallAPIMethod',
-            {"method" : "friends.appInvite", "request_id" : "appInvite",
-              "params": {"uids" : usersID, "text" : text + "\n" + link, "devices" : ["IOS", "ANDROID"]}
-            }
-          ).catch(err => {
-            unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
-          })
-        } else {
-          unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
-        }
-      }).catch(err => {
-        unityInstance.SendMessage('VKMechanicsController', 'NoInvite');
-      })
+      FAPI.UI.showInvite(text + "\n" + link);
+    }
+
+    function OKPublish(text, link) {
+      var attachment = {"media" : [
+        {"type": "text", "text": text},
+        {"type": "link", "url": link}
+      ]};
+      FAPI.UI.postMediatopic(attachment);
     }
 
     // VK
